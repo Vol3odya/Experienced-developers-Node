@@ -18,7 +18,7 @@ const userSchema = new Schema({
         type: String,
         requaired: true,
     },
-}, {versionKey: false, timestamps: true})
+}, { versionKey: false, timestamps: true });
 
 userSchema.post("save", handleSaveError);
 
