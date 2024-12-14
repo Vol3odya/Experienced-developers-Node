@@ -19,5 +19,4 @@ export const sendEmail = async (options) => {
     } catch (error) {
         throw createHttpError(500, "Failed to send the email, please try again later.");
     }
-  
 };
