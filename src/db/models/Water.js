@@ -1,36 +1,43 @@
 import { Schema, model } from "mongoose";
 
-import { handleSaveError, setUpdateSettings } from "./hooks.js";
+import { handleSaveError } from "./hooks.js";
 
-
-const waterSchema = new Schema({
-    userId: {
+/*, setUpdateSettings*/
+const waterSchema = new Schema(
+    {
+      waterVolume: {
+        type: Number,
+        required: [true, '"Water Volume" is required'],
+        min: [1, '"Water Volume" must be at least 1 ml'],
+        max: [5000, '"Water Volume" cannot exceed 5000 ml'],
+      },
+      dailyNorm: {
+        type: Number,
+      },
+      userId: {
         type: Schema.Types.ObjectId,
-        ref: "user",
-        required: true,
-    },
-    amount: {
+        ref: 'user',
+        required: [true, '"User ID" is required'],
+      },
+      date: {
         type: String,
-        required: true,
+        required: [true, '"Date" is required'],
+        validate: {
+          validator: function (value) {
+            return !isNaN(new Date(value).getTime());
+          },
+          message: '"Date" must be a valid date',
+        },
+      },
     },
-    curDaylyNorm: {
-        type: String,
-    },
-}, {
-    versionKey: false,
-    timestamps: true,
-});
+    { versionKey: false, timestamps: true }
+  );
 
-/*contactSchema.post("save", handleSaveError);
-
-contactSchema.pre("findOneAndUpdate", setUpdateSettings);
-
-contactSchema.post("findOneAndUpdate", handleSaveError);
-
-export const sortByList = ["name", "phoneNumber", "email"];
+  waterSchema.post('save', handleSaveError);
 
 
-const contactColection = model('contact', contactSchema);
+  waterSchema.post('findOneAndUpdate', handleSaveError);
 
+  const WaterCollection = model('water', waterSchema);
 
-export default contactColection;*/
+  export default WaterCollection;
