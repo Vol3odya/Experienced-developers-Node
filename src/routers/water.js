@@ -1,27 +1,45 @@
 import { Router } from "express";
-/*import * as contactControllers from "../controllers/contacts.js";*/
+
+import {
+  addWaterController,
+  deleteWaterController,
+  patchWaterController,
+  getTodayWaterController,
+
+} from '../controllers/water.js';
+
 import ctrlWrapper from "../utils/ctrlWrapper.js";
 import validateBody from "../utils/validateBody.js";
-/*import { contactAddSchema, contactUpdateSchema } from "../validation/contacts.js";*/
+
 import { isValidId } from "../middlewares/isValidd.js";
 import { authenticate } from "../middlewares/authenticate.js";
-import { upload } from '../middlewares/multer.js';
+/*import { upload } from '../middlewares/multer.js';*/
+
+import {
+  addWaterValidation,
+  updateWaterValidation,
+} from '../validation/water.js';
 
 
+const waterRouter = Router();
 
-/*const contactsRouter = Router();
-contactsRouter.use(authenticate);
+waterRouter.use(authenticate);
 
-contactsRouter.get("/", ctrlWrapper(contactControllers.getContactsControllers) );
+waterRouter.post(
+  '/',
+  validateBody(addWaterValidation),
+  ctrlWrapper(addWaterController),
+);
+waterRouter.patch(
+  '/:id',
+  isValidId,
+  validateBody(updateWaterValidation),
+  ctrlWrapper(patchWaterController),
+);
+waterRouter.delete('/:id', isValidId, ctrlWrapper(deleteWaterController));
 
-contactsRouter.get("/:contactId", isValidId, ctrlWrapper(contactControllers.getContactByIdControllers));
+/*waterRouter.get('/month', ctrlWrapper(getMonthWaterController));*/
 
-contactsRouter.post("/", upload.single('photo'), validateBody(contactAddSchema), ctrlWrapper(contactControllers.addContactControllers));
+waterRouter.get('/day/:day', ctrlWrapper(getTodayWaterController));
 
-contactsRouter.put("/:contactId", isValidId, validateBody(contactAddSchema), ctrlWrapper(contactControllers.upsertContactControllers));
-
-contactsRouter.patch("/:contactId", upload.single('photo'), isValidId, validateBody(contactUpdateSchema), ctrlWrapper(contactControllers.patchContactControllers));
-
-contactsRouter.delete("/:contactId", isValidId, ctrlWrapper(contactControllers.deleteContactControllers));
-    
-export default contactsRouter;*/
+export default waterRouter;
