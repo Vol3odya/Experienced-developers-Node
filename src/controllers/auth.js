@@ -2,7 +2,10 @@
 import * as authServices from "../services/auth.js";
 import { requestResetToken } from '../services/auth.js';
 import { resetPassword } from '../services/auth.js';
+import { env } from "../utils/env.js";
 import { generateAuthUrl } from "../utils/googleOAuth2.js";
+import { saveFileToCloudinary } from "../utils/saveFileToCloudinary.js";
+import { saveFileToUploadDir } from "../utils/saveFileToUploadDir.js";
 
 
 const setupSession = (res, session) => {
@@ -19,25 +22,28 @@ const setupSession = (res, session) => {
 };
 
 export const registerController = async (req, res) => {
-    const data = await authServices.register(req.body);
+  const data = await authServices.register(req.body);
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+   if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
 
 
     res.status(201).json({
     status: 201,
     message: 'Successfully registered a user!',
-    data: data,
+      data: {
+        data,
+        photo: photoUrl
+      },
   });
-    // res.status(201).json({
-    //     status: 201,
-    //     message: "Successfully registered a user!",
-    //     data: {
-    //         name:data.name,
-    //         email: data.email,
-    //         _id: data._id,
-    //         createdAt: data.createdAt,
-    //         updatedAt:data.updatedAt,
-    //     }
-    // });
 };
 
 export const loginController = async (req, res) => {

@@ -18,6 +18,18 @@ const userSchema = new Schema({
         type: String,
         requaired: true,
     },
+    gender: {
+    type: String,
+    enum: ['male', 'female'],
+    default: 'female',
+    },
+    waterRate: {
+    type: Number,
+    default: 2000,
+    },
+    photo: {
+    type: String,
+    },
 }, {versionKey: false, timestamps: true});
 
 userSchema.post("save", handleSaveError);

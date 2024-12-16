@@ -3,3 +3,4 @@ export const emailRegexp =/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)
 
 export const accessTokenLifetime = 900000;
 export const refreshTokenLifetime = 604800000;
+export const genderList = ['male', 'female'];
