@@ -60,7 +60,9 @@ export const addWaterController = async (req, res) => {
 
     res.json({
       status: 200,
-      message: 'Successfully geted water consumption data for today',
+      message: 'Today is water consumption data has been successfully retrieved',
       data,
     });
   };
+
+
