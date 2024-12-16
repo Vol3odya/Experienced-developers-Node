@@ -1,8 +1,10 @@
-/*import UserCollection from '../db/models/User.js';*/
+import UserCollection from '../db/models/User.js';
 import WaterCollection from '../db/models/Water.js';
 import createHttpError from 'http-errors';
 
 import UserSchema from '../db/models/User.js';
+
+import { getGroupedData } from '../utils/getGroupedData.js';
 
 export const createWater = (payload) => {
   return WaterCollection.create(payload);
@@ -81,5 +83,31 @@ export const getTodayWater = async (userId, today) => {
     totalWaterVolume,
     waterVolumeInPercent,
     waterVolumeTimeEntries,
+  };
+};
+
+export const getMonthWater = async ({ filter = {} }) => {
+  const waterQuery = WaterCollection.find();
+
+  if (filter.userId) {
+    waterQuery.where('userId').equals(filter.userId);
+  }
+
+  if (filter.year && filter.month) {
+    const monthString = filter.month.toString().padStart(2, '0');
+    const regex = new RegExp(`^${filter.year}-${monthString}`);
+    waterQuery.where('date').regex(regex);
+  }
+
+  const result = await waterQuery.exec();
+
+  const user = await UserCollection.find({ _id: filter.userId });
+
+  const userDailyNorm = user[0].dailyNorm;
+
+  const data = await getGroupedData(result, userDailyNorm);
+
+  return {
+    data,
   };
 };

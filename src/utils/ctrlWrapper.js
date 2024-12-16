@@ -5,8 +5,8 @@ const ctrlWrapper = ctrl => {
         } catch (error) {
             next(error);
         }
-    }
+    };
     return func;
-}
+};
 
 export default ctrlWrapper;

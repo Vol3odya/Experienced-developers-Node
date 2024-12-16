@@ -5,6 +5,7 @@ import {
   deleteWaterController,
   patchWaterController,
   getTodayWaterController,
+  getMonthWaterController
 
 } from '../controllers/water.js';
 
@@ -13,7 +14,7 @@ import validateBody from "../utils/validateBody.js";
 
 import { isValidId } from "../middlewares/isValidd.js";
 import { authenticate } from "../middlewares/authenticate.js";
-/*import { upload } from '../middlewares/multer.js';*/
+
 
 import {
   addWaterValidation,
@@ -38,7 +39,7 @@ waterRouter.patch(
 );
 waterRouter.delete('/:id', isValidId, ctrlWrapper(deleteWaterController));
 
-/*waterRouter.get('/month', ctrlWrapper(getMonthWaterController));*/
+waterRouter.get('/month', ctrlWrapper(getMonthWaterController));
 
 waterRouter.get('/day/:day', ctrlWrapper(getTodayWaterController));
 
