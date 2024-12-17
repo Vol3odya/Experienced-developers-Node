@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import createHttpError from 'http-errors';
 
 import User from '../db/models/User.js';
 

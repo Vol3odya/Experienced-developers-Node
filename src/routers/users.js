@@ -13,7 +13,7 @@ usersRoter.use(authenticate);
 
 usersRoter.get('/userById', isValidId, ctrlWrapper(getUsersController));
 usersRoter.patch('/waterRate', isValidId, validateBody(updateWateRateSchema), ctrlWrapper(getUsersWaterRateController));
-usersRoter.patch('/photo', isValidId, upload.single('photo'), validateBody(updatePhotoSchema), ctrlWrapper(updateUserPhotoController));
+usersRoter.patch('/avatar', isValidId, upload.single('photo'), validateBody(updatePhotoSchema), ctrlWrapper(updateUserPhotoController));
 usersRoter.patch('/update', validateBody(updateUsersSchema), ctrlWrapper(updateUserInfoController));
 
 
