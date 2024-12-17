@@ -11,7 +11,7 @@ const waterSchema = new Schema(
         min: [1, '"Water Volume" must be at least 1 ml'],
         max: [5000, '"Water Volume" cannot exceed 5000 ml'],
       },
-      dailyNorm: {
+      waterRate: {
         type: Number,
       },
       userId: {
