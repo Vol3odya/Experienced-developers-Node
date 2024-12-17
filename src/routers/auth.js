@@ -11,8 +11,8 @@ import { upload } from '../middlewares/multer.js';
 
 const authRouter = Router();
 
-authRouter.post("/register", upload.single('photo'), validateBody(authRegisterSchema), ctrlWrapper(authControllers.registerController));
-authRouter.post("/login", validateBody(authLoginSchema), ctrlWrapper(authControllers.loginController));
+authRouter.post("/signup", upload.single('photo'), validateBody(authRegisterSchema), ctrlWrapper(authControllers.registerController));
+authRouter.post("/signin", validateBody(authLoginSchema), ctrlWrapper(authControllers.loginController));
 authRouter.post("/refresh", ctrlWrapper(authControllers.refreshSessionController));
 authRouter.post("/logout", ctrlWrapper(authControllers.logoutController));
 authRouter.post("/send-reset-email", validateBody(requestResetEmailSchema), ctrlWrapper(authControllers.requestResetEmailController));
