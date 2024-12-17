@@ -7,13 +7,13 @@ export const updateUsersSchema = Joi.object({
   outdatePassword: Joi.string(),
   name: Joi.string().min(2).max(20),
   gender: Joi.string().valid(...genderList).default('male'),
-  waterRate: Joi.string().min(1000).max(15000),
+  waterRate: Joi.number().min(1000).max(15000),
 });
 
-export const updateAvatarSchema = Joi.object({
+export const updatePhotoSchema = Joi.object({
 photo: Joi.string().uri(),
 });
 
-export const wateRateSchema = Joi.object({
+export const updateWateRateSchema = Joi.object({
 waterRate: Joi.number().min(1000).max(15000),
 });
