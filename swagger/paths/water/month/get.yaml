@@ -1,0 +1,46 @@
+tags:
+  - Water
+summary: Get water consumption records by month
+operationId: getWaterByMonth
+description: Return water consumption records for a specific month and year
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: date
+    description: "The month and year for which to retrieve water consumption records in 'MM-YYYY' format"
+    required: true
+    schema:
+      type: string
+      example: '12-2024'
+responses:
+  '200':
+    description: Water records found for the specific month
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code indicating the records were successfully found
+              example: 200
+            message:
+              type: string
+              example: Water consumption data per month found successfully!
+            data:
+              type: array
+              items:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    example: '17, December'
+                  dailyNorma:
+                    type: string
+                    description: The user's daily water consumption goal in liters
+                    example: '1.5 L'
+  '400':
+    $ref: '../../../components/responses/400.yaml'
+  '404':
+    $ref: '../../../components/responses/401.yaml'
