@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 
 import { handleSaveError } from "./hooks.js";
 
-/*, setUpdateSettings*/
+
 const waterSchema = new Schema(
     {
       waterVolume: {
@@ -22,12 +22,7 @@ const waterSchema = new Schema(
       date: {
         type: String,
         required: [true, '"Date" is required'],
-        validate: {
-          validator: function (value) {
-            return !isNaN(new Date(value).getTime());
-          },
-          message: '"Date" must be a valid date',
-        },
+
       },
     },
     { versionKey: false, timestamps: true }
