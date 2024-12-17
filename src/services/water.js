@@ -66,10 +66,10 @@ export const getTodayWater = async (userId, today) => {
     0,
   );
 
-  const { dailyNorm } = user;
+  const { waterRate } = user;
 
   const waterVolumeInPercent = Math.min(
-    Math.floor((totalWaterVolume / dailyNorm) * 100),
+    Math.floor((totalWaterVolume / waterRate) * 100),
     100,
   );
 
@@ -103,9 +103,9 @@ export const getMonthWater = async ({ filter = {} }) => {
 
   const user = await UserCollection.find({ _id: filter.userId });
 
-  const userDailyNorm = user[0].dailyNorm;
+  const userWaterRate = user[0].waterRate;
 
-  const data = await getGroupedData(result, userDailyNorm);
+  const data = await getGroupedData(result, userWaterRate);
 
   return {
     data,
