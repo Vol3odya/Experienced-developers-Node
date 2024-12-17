@@ -11,6 +11,7 @@ import { errorHendler } from "./middlewares/errorHendler.js";
 
 /*import { logger } from "./middlewares/legger.js";*/
 import authRouter from "./routers/auth.js";
+import usersRoter from "./routers/users.js";
 import cookieParser from "cookie-parser";
 import { UPLOAD_DIR } from './constants/index.js';
 import { swaggerDocs } from './middlewares/swaggerDocs.js';
@@ -25,7 +26,8 @@ export const setupServer = () => {
     app.use(cookieParser());
     //app.use(logger);
 
-   app.use("/auth", authRouter);
+    app.use("/auth", authRouter);
+    app.use('/profile', usersRoter);
 
     /*app.use("/contacts", contactsRouter);*/
 

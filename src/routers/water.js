@@ -12,7 +12,7 @@ import {
 import ctrlWrapper from "../utils/ctrlWrapper.js";
 import validateBody from "../utils/validateBody.js";
 
-import { isValidId } from "../middlewares/isValidd.js";
+import  isValidId  from "../middlewares/isValidd.js";
 import { authenticate } from "../middlewares/authenticate.js";
 
 

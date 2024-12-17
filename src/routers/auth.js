@@ -6,11 +6,12 @@ import validateBody from "../utils/validateBody.js";
 import { authRegisterSchema, authLoginSchema, requestResetEmailSchema, loginWithGoogleOAuthSchema } from "../validation/auth.js";
 
 import { resetPasswordSchema } from '../validation/auth.js';
+import { upload } from '../middlewares/multer.js';
 
 
 const authRouter = Router();
 
-authRouter.post("/register", validateBody(authRegisterSchema), ctrlWrapper(authControllers.registerController));
+authRouter.post("/register", upload.single('photo'), validateBody(authRegisterSchema), ctrlWrapper(authControllers.registerController));
 authRouter.post("/login", validateBody(authLoginSchema), ctrlWrapper(authControllers.loginController));
 authRouter.post("/refresh", ctrlWrapper(authControllers.refreshSessionController));
 authRouter.post("/logout", ctrlWrapper(authControllers.logoutController));
