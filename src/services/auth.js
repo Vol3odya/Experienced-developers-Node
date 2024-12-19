@@ -33,9 +33,28 @@ export const register = async payload => {
     if (user) {
         throw createHttpError(409, "Email already in use.");
     }
-    const hashpassword = await bcrypt.hash(password, 10);
+  const hashpassword = await bcrypt.hash(password, 10);
 
-    return UserCollection.create({...payload, password: hashpassword});
+  const newUser = UserCollection.create({
+    ...payload,
+    password: hashpassword
+  });
+
+  const newSession = createSession();
+
+  const session = await SessionCollection.create({userId: user._id,
+    ...newSession,});
+
+  return {
+    user: {
+      name: newUser.name,
+      email: newUser.email,
+      gender: newUser.gender,
+      waterRate: newUser.waterRate,
+      photo: newUser.photo,
+    },
+    session,
+  };
 };
 
 export const login = async ({ email, password }) => {
@@ -51,14 +70,24 @@ export const login = async ({ email, password }) => {
 
     const accessToken = randomBytes(30).toString('base64');
   const refreshToken = randomBytes(30).toString('base64');
-
-  return await SessionCollection.create({
+  const session = await SessionCollection.create({
     userId: user._id,
     accessToken,
     refreshToken,
     accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
     refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
   });
+
+  return {
+    user: {
+      name: user.name,
+      email: user.email,
+      gender: user.gender,
+      waterRate: user.waterRate,
+      photo: user.photo,
+    },
+    session,
+  };
 };
 
 

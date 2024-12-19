@@ -26,8 +26,8 @@ paths:
     patch:
       $ref: '../swagger/paths/user/avatar/patch.yaml'
   /user/waterRate:
-    patch:
-      $ref: '../swagger/paths/user/waterRate/patch.yaml'
+    get:
+      $ref: '../swagger/paths/user/waterRate/get.yaml'
   /auth/signup:
     post:
       $ref: '../swagger/paths/auth/register/post.yaml'
