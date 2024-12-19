@@ -45,12 +45,12 @@ paths:
       $ref: '../swagger/paths/water/{id}/patch.yaml'
     delete:
       $ref: '../swagger/paths/water/{id}/delete.yaml'
-  /water/day/:day:
+  /water/day/{day}:
     get:
-      $ref: '../swagger/paths/water/oneday/get.yaml'
-  /water/month:
+      $ref: '../swagger/paths/water/{day}/get.yaml'
+  /water/month/{month}:
     get:
-      $ref: '../swagger/paths/water/month/get.yaml'
+      $ref: '../swagger/paths/water/{month}/get.yaml'
 components:
   securitySchemes:
     bearerAuth:
