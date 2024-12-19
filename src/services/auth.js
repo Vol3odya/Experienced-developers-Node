@@ -28,22 +28,30 @@ const createSession = () => {
 };
 
 export const register = async payload => {
-    const { email, password } = payload;
+    const { email, password} = payload;
     const user = await UserCollection.findOne({ email });
     if (user) {
         throw createHttpError(409, "Email already in use.");
     }
   const hashpassword = await bcrypt.hash(password, 10);
 
-  const newUser = UserCollection.create({
+  const newUser = await UserCollection.create({
     ...payload,
     password: hashpassword
   });
 
+
+
   const newSession = createSession();
 
-  const session = await SessionCollection.create({userId: user._id,
-    ...newSession,});
+
+  const session = await SessionCollection.create({userId: newUser._id,
+    ...newSession,
+  });
+
+  
+
+
 
   return {
     user: {

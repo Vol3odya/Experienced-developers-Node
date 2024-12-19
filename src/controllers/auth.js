@@ -24,6 +24,7 @@ const setupSession = (res, session) => {
 export const registerController = async (req, res) => {
   const data = await authServices.register(req.body);
   const { user, session } = data;
+
   const photo = req.file;
 
   setupSession(res, session);
@@ -44,7 +45,7 @@ export const registerController = async (req, res) => {
     message: 'Successfully registered a user!',
       data: {
         accessToken: session.accessToken,
-        user: user,
+        user,
         photo: photoUrl
       },
   });
@@ -78,7 +79,7 @@ export const refreshSessionController = async (req, res) => {
         status: 200,
         message: "Successfully refreshed a session!",
         data: {
-            accessToken: session.accessToken,
+          accessToken: session.accessToken,
         }
     });
 };
