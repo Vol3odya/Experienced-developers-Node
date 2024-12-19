@@ -9,7 +9,16 @@ requestBody:
   content:
     application/json:
       schema:
-        $ref: '../../components/schemas/waterInput.yaml'
+        type: object
+        properties:
+          waterVolume:
+            type: number
+            description: 'waterVolume'
+            example: 500
+          data:
+            type: string
+            description: 'data`s water'
+            example: 2024-12-18 13:10
 responses:
   '200':
     description: Water record created successfully
@@ -26,6 +35,6 @@ responses:
               example: Water record created successfully!
             data:
               type: object
-              $ref: '../../components/schemas/waterInput.yaml'
+              $ref: ../../components/schemas/water.yaml
   '400':
     $ref: ../../components/responses/400.yaml

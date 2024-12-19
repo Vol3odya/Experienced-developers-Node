@@ -567,7 +567,19 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/waterInput"
+                "type": "object",
+                "properties": {
+                  "waterVolume": {
+                    "type": "number",
+                    "description": "waterVolume",
+                    "example": 500
+                  },
+                  "data": {
+                    "type": "string",
+                    "description": "data`s water",
+                    "example": "2024-12-18 13:10"
+                  }
+                }
               }
             }
           }
@@ -590,7 +602,7 @@
                     },
                     "data": {
                       "type": "object",
-                      "$ref": "#/components/schemas/waterInput"
+                      "$ref": "#/components/schemas/water"
                     }
                   }
                 }
@@ -609,7 +621,7 @@
           "Water"
         ],
         "summary": "Edit water consumption record",
-        "operationId": "editData",
+        "operationId": "patchWater",
         "description": "Update an existing water consumption record by id",
         "security": [
           {
@@ -633,7 +645,23 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/waterInput"
+                "type": "object",
+                "required": [
+                  "waterVolume",
+                  "data"
+                ],
+                "properties": {
+                  "waterVolume": {
+                    "type": "number",
+                    "description": "waterVolume",
+                    "example": 500
+                  },
+                  "data": {
+                    "type": "string",
+                    "description": "data`s water",
+                    "example": "2024-10-23 13:10"
+                  }
+                }
               }
             }
           }
@@ -655,7 +683,7 @@
                       "example": "Water record updated successfully!"
                     },
                     "data": {
-                      "$ref": "#/components/schemas/waterInput"
+                      "$ref": "#/components/schemas/water"
                     }
                   }
                 }
@@ -696,7 +724,28 @@
         ],
         "responses": {
           "204": {
-            "description": "Water consumption record deleted successfully. No content returned."
+            "description": "Water consumption record deleted successfully. No content returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 204
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully deleted water"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/400"
@@ -707,22 +756,34 @@
         }
       }
     },
-    "/water/day/:day": {
+    "/water/day/{day}": {
       "get": {
         "tags": [
           "Water"
         ],
         "summary": "Get today's water consumption",
-        "operationId": "getWaterByDay",
+        "operationId": "getWaterDay",
         "description": "Retrieve the water consumption records for the current day for the logged-in user.",
         "security": [
           {
             "bearerAuth": []
           }
         ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "day",
+            "description": "The date for which to retrieve water consumption data in 'YYYY-MM-DD' format",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024-12-18"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Water consumption data for today retrieved successfully",
+            "description": "Today is water consumption data has been successfully retrieved",
             "content": {
               "application/json": {
                 "schema": {
@@ -730,10 +791,51 @@
                   "properties": {
                     "status": {
                       "type": "integer",
+                      "description": "HTTP status code indicating the data was successfully retrieved",
                       "example": 200
                     },
+                    "message": {
+                      "type": "string",
+                      "example": "Today is water consumption data has been successfully retrieved"
+                    },
                     "data": {
-                      "type": "array"
+                      "type": "object",
+                      "properties": {
+                        "totalWaterVolume": {
+                          "type": "integer",
+                          "description": "The total volume of water consumed in milliliters",
+                          "example": 700
+                        },
+                        "waterVolumeInPercent": {
+                          "type": "integer",
+                          "description": "The percentage of the daily water consumption goal that was achieved",
+                          "example": 35
+                        },
+                        "waterVolumeTimeEntries": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "type": "string",
+                                "description": "The unique identifier for the water consumption entry",
+                                "example": "6762e32b9655268c39494d1d"
+                              },
+                              "waterVolume": {
+                                "type": "integer",
+                                "description": "The volume of water consumed in milliliters",
+                                "example": 100
+                              },
+                              "time": {
+                                "type": "string",
+                                "description": "The time when the water consumption was recorded in 'HH:MM' format",
+                                "example": "09:30",
+                                "$ref": "#/components/schemas/waterDay"
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -749,13 +851,13 @@
         }
       }
     },
-    "/water/month": {
+    "/water/month/{month}": {
       "get": {
         "tags": [
           "Water"
         ],
         "summary": "Get water consumption records by month",
-        "operationId": "getWaterByMonth",
+        "operationId": "getWaterMonth",
         "description": "Return water consumption records for a specific month and year",
         "security": [
           {
@@ -765,7 +867,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "date",
+            "name": "month",
             "description": "The month and year for which to retrieve water consumption records in 'MM-YYYY' format",
             "required": true,
             "schema": {
@@ -789,21 +891,42 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Water consumption data per month found successfully!"
+                      "example": "Successfully found month data!"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "date": {
-                            "type": "string",
-                            "example": "17, December"
-                          },
-                          "dailyNorma": {
-                            "type": "string",
-                            "description": "The user's daily water consumption goal in liters",
-                            "example": "1.5 L"
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "date": {
+                                "type": "string",
+                                "example": "18, December"
+                              },
+                              "waterRate": {
+                                "type": "string",
+                                "description": "The user's daily water consumption goal in liters",
+                                "example": "2.0 L"
+                              },
+                              "waterVolume": {
+                                "type": "string",
+                                "description": "The actual volume of water consumed in liters",
+                                "example": "0.7 L"
+                              },
+                              "count": {
+                                "type": "integer",
+                                "description": "The number of times water consumption was recorded",
+                                "example": 3
+                              },
+                              "percent": {
+                                "type": "string",
+                                "description": "The percentage of the daily water consumption goal that was achieved",
+                                "example": "35%",
+                                "$ref": "#/components/schemas/waterMonth"
+                              }
+                            }
                           }
                         }
                       }
@@ -885,25 +1008,125 @@
           }
         }
       },
-      "waterInput": {
+      "water": {
         "type": "object",
         "required": [
-          "value",
-          "dateTime"
+          "waterVolume",
+          "date"
         ],
         "properties": {
-          "value": {
+          "waterVolume": {
             "type": "number",
-            "description": "The amount of water consumed, in milliliters (must be between 50 and 5000).",
+            "description": "The waterVolume of water consumed, in milliliters (must be between 50 and 5000).",
             "minimum": 1,
             "maximum": 5000,
             "example": 250
           },
-          "dateTime": {
+          "userId": {
             "type": "string",
-            "description": "The date and time of water consumption. Must be in 'DD-MM-YYYY HH:mm:ss' format",
+            "description": "User's ID",
+            "example": "609e126aa08b5b3c88b728db"
+          },
+          "date": {
+            "type": "string",
+            "description": "The date and time of water consumption. Must be in 'DD-MM-YYYY HH:mm' format",
             "format": "date-time",
-            "example": "17-12-2024 18:26:00"
+            "example": "17-12-2024 18:26"
+          },
+          "_id": {
+            "type": "string",
+            "example": "67135ea1260aecfe82bea7b7"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-17T12:00:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-17T12:00:00.000Z"
+          }
+        }
+      },
+      "waterDay": {
+        "properties": {
+          "totalWaterVolume": {
+            "type": "integer",
+            "example": 1200
+          },
+          "waterVolumeInPercent": {
+            "type": "integer",
+            "example": 35
+          },
+          "waterVolumeTimeEntries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "_id",
+                "waterVolume",
+                "time"
+              ],
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "6718c07fcf8c9f7bf63c07f3"
+                },
+                "waterVolume": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "time": {
+                  "type": "string",
+                  "example": "09:30"
+                }
+              }
+            }
+          }
+        }
+      },
+      "waterMonth": {
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "date",
+                "waterRate",
+                "waterVolume",
+                "count",
+                "percent"
+              ],
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "example": "18, December",
+                  "description": "Date in the format - day, month (e.g. 18, December)"
+                },
+                "waterRate": {
+                  "type": "integer",
+                  "example": "2.0 L",
+                  "description": "Daily water consumption norm in liters"
+                },
+                "waterVolume": {
+                  "type": "integer",
+                  "example": "0.7 L",
+                  "description": "Actual water volume consumed"
+                },
+                "count": {
+                  "type": "integer",
+                  "example": 3,
+                  "description": "Number of water intake entries"
+                },
+                "percent": {
+                  "type": "string",
+                  "example": "20%",
+                  "description": "Water consumption percentage relative to the waterRate"
+                }
+              }
+            }
           }
         }
       }

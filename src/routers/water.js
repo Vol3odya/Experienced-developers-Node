@@ -31,15 +31,17 @@ waterRouter.post(
   validateBody(addWaterValidation),
   ctrlWrapper(addWaterController),
 );
+
 waterRouter.patch(
   '/:id',
   isValidId,
   validateBody(updateWaterValidation),
   ctrlWrapper(patchWaterController),
 );
+
 waterRouter.delete('/:id', isValidId, ctrlWrapper(deleteWaterController));
 
-waterRouter.get('/month', ctrlWrapper(getMonthWaterController));
+waterRouter.get('/month/:month', ctrlWrapper(getMonthWaterController));
 
 waterRouter.get('/day/:day', ctrlWrapper(getTodayWaterController));
 
