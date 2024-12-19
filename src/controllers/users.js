@@ -1,5 +1,5 @@
 import createHttpError from 'http-errors';
-import { getUserProfile, patchUserWaterRate, updateUserInfo, updeteUserPhoto } from '../services/users.js';
+import { getUserProfile, patchUserWaterRate, updateUserInfo, updateUserPhoto } from '../services/users.js';
 import {saveFileToCloudinary} from '../utils/saveFileToCloudinary.js';
 import {saveFileToUploadDir} from '../utils/saveFileToUploadDir.js';
 
@@ -56,7 +56,7 @@ export const updateUserPhotoController = async (req, res, next) => {
     }
   }
 
-  const update = await updeteUserPhoto(userId, { photo: photoUrl });
+  const update = await updateUserPhoto(userId, { photo: photoUrl });
 
   if (!update) throw createHttpError(404, 'User not found');
 
@@ -72,7 +72,13 @@ export const updateUserInfoController = async (req, res) => {
   const user = req.user;
   const body = req.body;
 
+  
+
   const data = await updateUserInfo(body, user);
+
+  if (!data) {
+    throw createHttpError(404, 'User not found');
+  }
 
   res.json({
     status: 200,

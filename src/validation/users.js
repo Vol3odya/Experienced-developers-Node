@@ -8,6 +8,7 @@ export const updateUsersSchema = Joi.object({
   name: Joi.string().min(2).max(20),
   gender: Joi.string().valid(...genderList).default('male'),
   waterRate: Joi.number().min(1000).max(15000),
+  photo: Joi.string().uri(),
 });
 
 export const updatePhotoSchema = Joi.object({

@@ -14,7 +14,7 @@ usersRoter.use(authenticate);
 usersRoter.get('/userById', isValidId, ctrlWrapper(getUsersController));
 usersRoter.patch('/waterRate', isValidId, validateBody(updateWateRateSchema), ctrlWrapper(patchUsersWaterRateController));
 usersRoter.patch('/avatar', isValidId, upload.single('photo'), validateBody(updatePhotoSchema), ctrlWrapper(updateUserPhotoController));
-usersRoter.patch('/update', validateBody(updateUsersSchema), ctrlWrapper(updateUserInfoController));
+usersRoter.patch('/update', isValidId, validateBody(updateUsersSchema), ctrlWrapper(updateUserInfoController));
 
 
 export default usersRoter;

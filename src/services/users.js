@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt';
-
-import User from '../db/models/User.js';
+import createHttpError from 'http-errors';
+import UserCollection from '../db/models/User.js';
 
 export const getUserProfile = async (userId) => {
-  const user = await User.findById({ _id: userId });
+  const user = await UserCollection.findById({ _id: userId });
 
   return {
     name: user.name,
@@ -16,14 +16,14 @@ export const getUserProfile = async (userId) => {
 
 export const patchUserWaterRate = async (userId) => {
 
-  const user = await User.findById({ _id: userId });
+  const user = await UserCollection.findById({ _id: userId });
 
   return { waterRate: user.waterRate };
 };
 
-export const updeteUserPhoto = async (userId, photo) => {
+export const updateUserPhoto = async (userId, photo) => {
 
-  const userPhoto = await User.findByIdAndUpdate({ _id: userId }, photo, {
+  const userPhoto = await UserCollection.findByIdAndUpdate({ _id: userId }, photo, {
     new: true,
     includeResultMetadata: true,
   });
@@ -38,23 +38,35 @@ export const updeteUserPhoto = async (userId, photo) => {
 };
 
 export const updateUserInfo = async (body, user) => {
-  const newPassword = body.newPassword;
-  const newDailyNorm = body.dailyNorm;
+  console.log(body);
+  const { password, _id } = user;
 
-  if (newPassword) {
-    const hashPassword = await bcrypt.hash(newPassword, 10);
-    const data = await User.findOneAndUpdate(user, { ...body, password: hashPassword }, { new: true });
+  if (body.outdatePassword && !body.password) {
+    throw createHttpError(400, 'New password is missing!');
+    }
 
-    return { data, };
+  if (body.password && body.outdatePassword) {
+    const isPasswordCorrect = await bcrypt.compare(body.outdatePassword, password);
+
+    if (!isPasswordCorrect) {
+      throw createHttpError(401, 'Invalid password');
+    }
+    body.password = await bcrypt.hash(body.password, 10);
+    }
+
+  const newUser = await UserCollection.findOneAndUpdate({_id}, body, {
+    new: true,
+    includeResultMetadata: true,
+    runValidators: true,
+  });
+
+
+  if (!newUser || !newUser.value) return null;
+
+
+  return {
+    user: newUser.value,
+    isNew: Boolean(newUser?.lastErrorObject?.upserted),
   };
 
-  if (newDailyNorm) {
-    const data = await User.findOneAndUpdate(user, { ...body, dailyNorm: newDailyNorm }, { new: true });
-
-    return { data, };
-  }
-
-  const data = await User.findOneAndUpdate(user, { ...body }, { new: true });
-
-  return { data, };
 };
