@@ -74,7 +74,7 @@ export const addWaterController = async (req, res) => {
     const { month, year } = filter;
 
     if (!month || !year) {
-      throw createHttpError(400, 'Date is required');
+      throw createHttpError(400, "Date is required");
     }
 
     const data = await waterServices.getMonthWater({
@@ -83,8 +83,7 @@ export const addWaterController = async (req, res) => {
 
     res.status(200).json({
       status: 200,
-      message: 'Successfully found month data!',
+      message: "Successfully found month data!",
       data: data,
     });
   };
-

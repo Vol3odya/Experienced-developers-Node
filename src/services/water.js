@@ -90,24 +90,26 @@ export const getMonthWater = async ({ filter = {} }) => {
   const waterQuery = WaterCollection.find();
 
   if (filter.userId) {
-    waterQuery.where('userId').equals(filter.userId);
+    waterQuery.where("userId").equals(filter.userId);
   }
 
   if (filter.year && filter.month) {
-    const monthString = filter.month.toString().padStart(2, '0');
+    const monthString = filter.month.toString().padStart(2, "0");
     const regex = new RegExp(`^${filter.year}-${monthString}`);
-    waterQuery.where('date').regex(regex);
+    waterQuery.where("date").regex(regex);
   }
 
   const result = await waterQuery.exec();
 
-  const user = await UserCollection.find({ _id: filter.userId });
+  const user = await UserCollection.findById(filter.userId);
 
-  const userWaterRate = user[0].waterRate;
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const userWaterRate = user.waterRate; // Денна норма користувача
 
   const data = await getGroupedData(result, userWaterRate);
 
-  return {
-    data,
-  };
+  return { data };
 };
