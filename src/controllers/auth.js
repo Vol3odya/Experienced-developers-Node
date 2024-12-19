@@ -68,10 +68,14 @@ export const loginController = async (req, res) => {
 };
 
 export const refreshSessionController = async (req, res) => {
-    const session = await authServices.refreshUserSession({
+    const data = await authServices.refreshUserSession({
     sessionId: req.cookies.sessionId,
     refreshToken: req.cookies.refreshToken,
-  });
+    });
+
+  const { user, session } = data;
+
+
 
     setupSession(res, session);
 
@@ -80,6 +84,7 @@ export const refreshSessionController = async (req, res) => {
         message: "Successfully refreshed a session!",
         data: {
           accessToken: session.accessToken,
+          user,
         }
     });
 };
