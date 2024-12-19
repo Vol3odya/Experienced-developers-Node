@@ -248,7 +248,7 @@
       }
     },
     "/user/waterRate": {
-      "patch": {
+      "get": {
         "tags": [
           "User"
         ],
