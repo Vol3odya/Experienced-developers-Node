@@ -14,7 +14,7 @@ export const getUserProfile = async (userId) => {
   };
 };
 
-export const getUserWaterRate = async (userId) => {
+export const patchUserWaterRate = async (userId) => {
 
   const user = await User.findById({ _id: userId });
 

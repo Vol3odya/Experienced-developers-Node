@@ -1,5 +1,5 @@
 import createHttpError from 'http-errors';
-import { getUserProfile, getUserWaterRate, updateUserInfo, updeteUserPhoto } from '../services/users.js';
+import { getUserProfile, patchUserWaterRate, updateUserInfo, updeteUserPhoto } from '../services/users.js';
 import {saveFileToCloudinary} from '../utils/saveFileToCloudinary.js';
 import {saveFileToUploadDir} from '../utils/saveFileToUploadDir.js';
 
@@ -22,11 +22,11 @@ export const getUsersController = async (req, res, next) => {
 };
 
 
-export const getUsersWaterRateController = async (req, res, next) => {
+export const patchUsersWaterRateController = async (req, res, next) => {
 
   const userId = req.user._id;
 
-   const userById = await getUserWaterRate(userId);
+   const userById = await patchUserWaterRate(userId);
 
   if (userById === null) {
     return next(createHttpError('User not found'));
