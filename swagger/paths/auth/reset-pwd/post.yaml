@@ -1,20 +1,23 @@
 tags:
-  - User
-summary: Update dailyNorm
-operationId: updateWaterRate
-description: 'Update water daily norm for the user'
+  - Auth
+summary: Reset password of user
+operationId: resetPassword
+description: 'Reset password of user via url'
 security:
   - bearerAuth: []
 requestBody:
+  required: true
   content:
     application/json:
       schema:
-        $ref: '../../../components/schemas/waterRate.yaml'
+        type: object
         properties:
-          waterRate:
-            description: "User's daily norma in milliliters"
-            type: number
-            example: 50
+          password:
+            type: string
+            description: New password of user
+          token:
+            type: string
+            description: Token for reset password
 responses:
   '200':
     description: HTTP status code of a successful operation
@@ -32,10 +35,9 @@ responses:
               example: 200
             message:
               type: string
-              example: Successfully updated daily norm of water!
+              example: 'Password has been successfully reset.'
             data:
               type: object
-              $ref: '../../../components/schemas/waterRate.yaml'
   '401':
     $ref: '../../../components/responses/401.yaml'
   '404':

@@ -5,6 +5,8 @@ import UserCollection from '../db/models/User.js';
 export const getUserProfile = async (userId) => {
   const user = await UserCollection.findById({ _id: userId });
 
+
+
   return {
     name: user.name,
     email: user.email,

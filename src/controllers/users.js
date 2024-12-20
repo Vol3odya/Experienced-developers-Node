@@ -72,7 +72,7 @@ export const updateUserInfoController = async (req, res) => {
   const user = req.user;
   const body = req.body;
 
-  
+
 
   const data = await updateUserInfo(body, user);
 
@@ -82,7 +82,7 @@ export const updateUserInfoController = async (req, res) => {
 
   res.json({
     status: 200,
-    message: 'Successfully patched an user',
+    message: 'Info of user successfully updated',
     data,
   });
 
