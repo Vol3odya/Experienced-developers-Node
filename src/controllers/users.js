@@ -8,7 +8,7 @@ import { env } from '../utils/env.js';
 
 export const getUsersController = async (req, res, next) => {
   
-  const session = await SessionCollection.findOne({ accessToken: req.body.accessToken });
+  const session = await SessionCollection.findOne(req.body);
 
   if (session === null) {
     return next(createHttpError('Session not found'));
