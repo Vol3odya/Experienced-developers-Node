@@ -1,14 +1,24 @@
 import createHttpError from 'http-errors';
 import { getUserProfile, patchUserWaterRate, updateUserInfo, updateUserPhoto } from '../services/users.js';
 import {saveFileToCloudinary} from '../utils/saveFileToCloudinary.js';
-import {saveFileToUploadDir} from '../utils/saveFileToUploadDir.js';
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import SessionCollection from "../db/models/Session.js"
 
 import { env } from '../utils/env.js';
 
 export const getUsersController = async (req, res, next) => {
-  const userId = req.user._id;
+  
+  const session = await SessionCollection.findOne({ accessToken: req.body.accessToken });
 
-  const userById = await getUserProfile(userId);
+  if (session === null) {
+    return next(createHttpError('Session not found'));
+  }
+  
+  
+  
+  //const userId = req.user._id;
+
+  const userById = await getUserProfile(session.userId);
 
   if (userById === null) {
     return next(createHttpError('User not found'));
