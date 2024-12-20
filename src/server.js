@@ -27,7 +27,7 @@ export const setupServer = () => {
     //app.use(logger);
 
     app.use("/auth", authRouter);
-    app.use('/profile', usersRoter);
+    app.use('/users', usersRoter);
 
     /*app.use("/contacts", contactsRouter);*/
 

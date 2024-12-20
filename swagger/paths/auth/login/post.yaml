@@ -16,11 +16,11 @@ requestBody:
             type: string
             example: waterexample@gmail.com
           password:
-            description: "User's password. The password must contain between 8 and 64 characters"
+            description: "User's password. The password must contain between 6 and 30 characters"
             type: string
             example: 'Water1234'
-            minLength: 8
-            maxLength: 64
+            minLength: 6
+            maxLength: 30
         required:
           - email
           - password
@@ -63,11 +63,11 @@ responses:
                     name:
                       description: User's name
                       type: string
-                      example: Anya Dolphin
+                      example: John Doe
                     email:
                       type: string
                       description: User's email address
-                      example: dolphinslovewater@gmail.com
+                      example: johndoe@gmail.com
                     gender:
                       type: string
                       description: User's gender

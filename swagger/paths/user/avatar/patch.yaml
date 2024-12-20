@@ -1,6 +1,6 @@
 tags:
   - User
-summary: Update user avatar
+summary: Update avatar of user
 operationId: updateAvatar
 description: Update the user's avatar by uploading a photo file
 security:
@@ -18,7 +18,7 @@ requestBody:
             description: 'The new avatar photo file to upload'
 responses:
   '200':
-    description: User avatar updated successfully
+    description: HTTP status code of a successful operation
     content:
       application/json:
         schema:
@@ -31,7 +31,7 @@ responses:
             message:
               type: string
               description: Confirmation message that the avatar was successfully updated
-              example: Successfully patched a User!
+              example: 'Successfully patched a photo'
             data:
               type: string
               description: The URL of the user's updated avatar
