@@ -16,11 +16,15 @@ export const getUserProfile = async (userId) => {
   };
 };
 
-export const patchUserWaterRate = async (userId) => {
+export const patchUserWaterRate = async (userId, newWaterRate) => {
 
-  const user = await UserCollection.findById({ _id: userId });
+  const user = await UserCollection.findByIdAndUpdate({ _id: userId }, { waterRate: newWaterRate }, { new: true });
 
-  return { waterRate: user.waterRate };
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  return user;
 };
 
 export const updateUserPhoto = async (userId, photo) => {

@@ -16,5 +16,9 @@ photo: Joi.string().uri(),
 });
 
 export const updateWateRateSchema = Joi.object({
-waterRate: Joi.number().min(1000).max(15000),
+dailyNorma: Joi.number().min(1000).max(15000).messages({
+    'number.base': '"waterRate" must be a number',
+    'number.min': '"waterRate" must be at least 1000',
+    'number.max': '"waterRate" must not exceed 15000',
+  }),
 });
