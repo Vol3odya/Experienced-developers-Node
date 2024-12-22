@@ -25,17 +25,18 @@ export const getUsersController = async (req, res, next) => {
 export const patchUsersWaterRateController = async (req, res, next) => {
 
   const userId = req.user._id;
+  const { dailyNorma } = req.body;
 
-   const userById = await patchUserWaterRate(userId);
+   const updateUser = await patchUserWaterRate(userId, dailyNorma);
 
-  if (userById === null) {
+  if (updateUser === null) {
     return next(createHttpError('User not found'));
   }
 
   res.send({
     status: 200,
-    message: `User's ${userById.waterRate} WaterRate`,
-    data: userById.waterRate,
+    message: `User's ${updateUser.waterRate} WaterRate`,
+    data: updateUser.waterRate,
   });
 
 };
