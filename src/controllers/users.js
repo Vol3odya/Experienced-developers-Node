@@ -73,7 +73,6 @@ export const updateUserInfoController = async (req, res) => {
   const body = req.body;
 
 
-
   const data = await updateUserInfo(body, user);
 
   if (!data) {

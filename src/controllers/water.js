@@ -2,13 +2,13 @@ import createHttpError from 'http-errors';
 import * as waterServices from '../services/water.js';
 
 export const addWaterController = async (req, res) => {
+  
   const { _id: userId } = req.user;
   const { waterVolume, date } = req.body;
 
   if (waterVolume > 5000) {
     throw createHttpError(400, 'Water volume cannot exceed 5000 ml');
   }
-
   if (!date) {
     throw createHttpError(400, 'Date is required');
   }
