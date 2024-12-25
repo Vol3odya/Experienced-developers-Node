@@ -69,7 +69,7 @@ export const getTodayWater = async (userId, today) => {
   const { waterRate } = user;
 
   const waterVolumeInPercent = Math.min(
-    Math.floor((totalWaterVolume / waterRate) * 100),
+    Math.ceil((totalWaterVolume / waterRate) * 100),
     100,
   );
 
